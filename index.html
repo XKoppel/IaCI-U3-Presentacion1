@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidad 3 - Parte 1</title>
+<style>
+/* ============================================================
+   VARIABLES Y RESET
+============================================================ */
+:root{
+  --ink:#0b1f33;
+  --ink-soft:#33475b;
+  --brand:#0e7c86;
+  --brand-2:#12a4b0;
+  --brand-3:#4fd1c5;
+  --accent:#f4a259;
+  --growth:#2563eb;
+  --growth-soft:#dbeafe;
+  --dev:#16a34a;
+  --dev-soft:#dcfce7;
+  --danger:#dc2626;
+  --danger-soft:#fee2e2;
+  --ok:#16a34a;
+  --ok-soft:#dcfce7;
+  --warn:#d97706;
+  --paper:#ffffff;
+  --bg:#eef3f8;
+  --line:#dbe3ec;
+  --shadow:0 10px 30px -12px rgba(11,31,51,.25);
+  --shadow-lg:0 24px 60px -20px rgba(11,31,51,.35);
+  --radius:18px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+body{
+  font-family:var(--font);
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{line-height:1.2;color:var(--ink)}
+p{color:var(--ink-soft)}
+a{color:var(--brand)}
+img{max-width:100%}
+
+/* ============================================================
+   BARRA DE PROGRESO DE SCROLL
+============================================================ */
+#progress{
+  position:fixed;top:0;left:0;height:4px;width:0%;
+  background:linear-gradient(90deg,var(--brand),var(--brand-3),var(--accent));
+  z-index:1000;transition:width .1s linear;
+}
+
+/* ============================================================
+   NAV STICKY
+============================================================ */
+header.nav{
+  position:sticky;top:0;z-index:900;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;padding:7px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--ink);text-decoration:none;font-size:14px}
+.brand .logo{
+  width:30px;height:30px;border-radius:9px;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  display:grid;place-items:center;color:#fff;font-weight:900;font-size:13px;
+  box-shadow:var(--shadow);flex:none;
+}
+.brand small{display:none}
+.nav-links{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{
+  text-decoration:none;color:var(--ink-soft);font-weight:600;font-size:12.5px;
+  padding:6px 9px;border-radius:8px;transition:.25s;white-space:nowrap;
+}
+.nav-links a:hover{background:var(--bg);color:var(--ink)}
+.nav-links a.active{background:var(--brand);color:#fff;box-shadow:var(--shadow)}
+.nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:18px;cursor:pointer}
+@media(max-width:880px){
+  .nav-links{
+    position:absolute;top:46px;left:0;right:0;flex-direction:column;
+    background:#fff;padding:12px;border-bottom:1px solid var(--line);
+    display:none;box-shadow:var(--shadow);
+  }
+  .nav-links.open{display:flex}
+  .nav-toggle{display:block}
+}
+
+/* ============================================================
+   LAYOUT SECCIONES
+============================================================ */
+section{padding:90px 22px}
+.wrap{max-width:1100px;margin:0 auto}
+.eyebrow{
+  display:inline-block;font-size:12.5px;font-weight:800;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--brand);
+  background:var(--brand-soft,#e0f2f3);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+}
+.section-title{font-size:clamp(26px,4vw,40px);font-weight:900;margin-bottom:10px}
+.section-lead{font-size:clamp(15px,2vw,18px);max-width:720px;margin-bottom:34px}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero{
+  padding:70px 22px 60px;
+  background:
+    radial-gradient(900px 500px at 85% -10%,rgba(79,209,197,.35),transparent),
+    radial-gradient(700px 500px at 0% 110%,rgba(244,162,89,.25),transparent),
+    linear-gradient(160deg,#0b1f33,#0e3a44 60%,#0e7c86);
+  color:#fff;position:relative;overflow:hidden;
+}
+.hero .wrap{position:relative;z-index:2}
+.hero h1{color:#fff;font-size:clamp(30px,6vw,58px);font-weight:900;max-width:24ch;margin-bottom:18px}
+.hero p{color:#d7e6ea;font-size:clamp(16px,2.4vw,20px);max-width:60ch;margin-bottom:30px}
+.hero .pill{
+  display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.25);color:#eafaf8;
+  padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:26px;
+}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{
+  cursor:pointer;border:none;font-family:var(--font);font-weight:700;font-size:15px;
+  padding:13px 22px;border-radius:12px;transition:.25s;text-decoration:none;display:inline-flex;
+  align-items:center;gap:8px;
+}
+.btn-primary{background:var(--accent);color:#3b2400;box-shadow:var(--shadow)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.btn-ghost:hover{background:rgba(255,255,255,.2)}
+.hero-cards{display:flex;gap:16px;flex-wrap:wrap;margin-top:46px}
+.hero-cards .hc{
+  flex:1 1 200px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);
+  border-radius:16px;padding:18px;backdrop-filter:blur(4px);
+}
+.hero-cards .hc b{display:block;color:#fff;font-size:26px}
+.hero-cards .hc span{color:#cfe6ea;font-size:13px}
+
+/* ============================================================
+   CARDS Y GRID
+============================================================ */
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;box-shadow:var(--shadow);
+}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:820px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.tag{
+  display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  padding:4px 10px;border-radius:8px;margin-bottom:12px;
+}
+.tag.g{background:var(--growth-soft);color:var(--growth)}
+.tag.d{background:var(--dev-soft);color:var(--dev)}
+.card h3{font-size:20px;margin-bottom:8px}
+.card ul{margin:12px 0 0 18px}
+.card li{color:var(--ink-soft);margin-bottom:6px}
+
+/* Placeholder de imagen estilizado */
+.ph{
+  border-radius:14px;height:150px;display:grid;place-items:center;text-align:center;
+  color:#fff;font-weight:700;position:relative;overflow:hidden;margin-bottom:16px;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+}
+.ph .ico{font-size:40px;line-height:1}
+.ph small{position:absolute;bottom:8px;font-weight:600;font-size:11px;opacity:.85}
+.ph.blue{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+.ph.green{background:linear-gradient(135deg,#15803d,#22c55e)}
+.ph.amber{background:linear-gradient(135deg,#b45309,#f59e0b)}
+.ph.dark{background:linear-gradient(135deg,#0b1f33,#334155)}
+
+/* Datos destacados */
+.stat-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.stat{
+  flex:1 1 160px;background:linear-gradient(180deg,#fff,#f4f8fb);border:1px solid var(--line);
+  border-radius:14px;padding:18px;text-align:center;
+}
+.stat b{display:block;font-size:32px;color:var(--brand);font-weight:900}
+.stat span{font-size:13px;color:var(--ink-soft)}
+
+.callout{
+  border-left:5px solid var(--accent);background:#fff7ed;border-radius:12px;
+  padding:16px 18px;margin-top:18px;
+}
+.callout b{color:#7c2d12}
+
+/* Tarjetas flip de certificaciones */
+.cert-sub{font-weight:800;font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:var(--brand);margin:26px 0 4px}
+.cert-hint-top{font-size:13px;color:var(--ink-soft);margin-bottom:14px}
+.cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:820px){.cert-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.cert-grid{grid-template-columns:1fr}}
+.cert{perspective:1200px;height:210px;cursor:pointer;outline:none}
+.cert:focus-visible .cert-inner{box-shadow:0 0 0 3px var(--accent);border-radius:14px}
+.cert-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+.cert.flipped .cert-inner{transform:rotateY(180deg)}
+.cert-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;
+  border-radius:14px;padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid var(--line)}
+.cert-front{background:linear-gradient(160deg,#fff,#eef4f8)}
+.cert-front .cert-ico{font-size:40px;margin-bottom:8px}
+.cert-front h4{font-size:16px;margin-bottom:4px;color:var(--ink)}
+.cert-front .cert-tag{font-size:12px;color:var(--ink-soft)}
+.cert-front .flip-hint{position:absolute;bottom:12px;font-size:10.5px;color:var(--brand);font-weight:800;letter-spacing:.5px}
+.cert-back{background:linear-gradient(160deg,var(--brand),var(--brand-2));color:#fff;transform:rotateY(180deg)}
+.cert-back h4{color:#fff;font-size:14.5px;margin-bottom:8px}
+.cert-back p{color:#eafaf8;font-size:12.5px;line-height:1.5}
+
+/* ============================================================
+   ANIMACIONES REVEAL (SCROLLTELLING)
+============================================================ */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.visible{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* ============================================================
+   DINÁMICA 1 · DRAG & DROP
+============================================================ */
+.dnd-help{font-size:13.5px;color:var(--ink-soft);margin-bottom:16px}
+.pool{
+  display:flex;flex-wrap:wrap;gap:10px;padding:16px;background:#f4f8fb;
+  border:2px dashed var(--line);border-radius:14px;min-height:70px;margin-bottom:20px;
+}
+.chip{
+  cursor:grab;user-select:none;background:#fff;border:1px solid var(--line);border-radius:11px;
+  padding:10px 14px;font-size:13.5px;font-weight:600;color:var(--ink);box-shadow:var(--shadow);
+  transition:.2s;
+}
+.chip:hover{transform:translateY(-2px)}
+.chip.dragging{opacity:.4}
+.chip.selected{outline:3px solid var(--accent);outline-offset:2px}
+.chip.correct{border-color:var(--ok);background:var(--ok-soft)}
+.chip.wrong{border-color:var(--danger);background:var(--danger-soft)}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:700px){.bins{grid-template-columns:1fr}}
+.bin{
+  border-radius:16px;padding:16px;min-height:180px;border:2px solid transparent;transition:.2s;
+}
+.bin.growth{background:var(--growth-soft);border-color:#bfdbfe}
+.bin.dev{background:var(--dev-soft);border-color:#bbf7d0}
+.bin.over{outline:3px dashed var(--accent);outline-offset:3px}
+.bin h4{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bin .badge{font-size:11px;padding:3px 8px;border-radius:8px;font-weight:800;color:#fff}
+.bin.growth .badge{background:var(--growth)}
+.bin.dev .badge{background:var(--dev)}
+.bin .drop-area{display:flex;flex-direction:column;gap:8px;margin-top:12px;min-height:70px}
+.controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;align-items:center}
+.btn-check{background:var(--brand);color:#fff}
+.btn-check:hover{background:var(--brand-2)}
+.btn-reset{background:#eef3f8;color:var(--ink)}
+.score-tag{font-weight:800;padding:8px 14px;border-radius:10px;background:#eef3f8}
+.score-tag.good{background:var(--ok-soft);color:#065f46}
+.score-tag.bad{background:var(--danger-soft);color:#991b1b}
+
+/* ============================================================
+   DINÁMICA 2 · PESTAÑAS BP + REGISTRADOR
+============================================================ */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tab-btn{
+  cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:12px;
+  padding:11px 18px;font-weight:700;font-size:14px;color:var(--ink-soft);transition:.2s;
+}
+.tab-btn.active{background:var(--brand);color:#fff;border-color:var(--brand);box-shadow:var(--shadow)}
+.tab-panel{display:none;animation:fade .4s ease}
+.tab-panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.acct-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.acct-ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:22px;color:#fff}
+.acct-ico.c{background:var(--brand)}.acct-ico.k{background:var(--accent)}.acct-ico.f{background:var(--growth)}
+.mini-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13.5px}
+.mini-table th,.mini-table td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+.mini-table th{color:var(--ink);font-weight:800;background:#f4f8fb}
+.sign-plus{color:var(--ok);font-weight:800}
+.sign-minus{color:var(--danger);font-weight:800}
+
+.reg-list{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+.reg-item{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}
+.reg-item .txt{font-weight:600;margin-bottom:12px}
+.reg-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+select{
+  font-family:var(--font);font-size:13.5px;padding:9px 12px;border-radius:10px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;min-width:190px;
+}
+.reg-feedback{margin-top:10px;font-size:13.5px;font-weight:600;display:none;padding:10px 12px;border-radius:10px}
+.reg-feedback.show{display:block}
+.reg-feedback.ok{background:var(--ok-soft);color:#065f46}
+.reg-feedback.no{background:var(--danger-soft);color:#991b1b}
+
+/* ============================================================
+   DINÁMICA 3 · SIMULADOR
+============================================================ */
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:820px){.sim-grid{grid-template-columns:1fr}}
+.scenario-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.scenario-btns .sbtn{
+  cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 14px;
+  font-weight:700;font-size:13px;color:var(--ink-soft);transition:.2s;
+}
+.scenario-btns .sbtn:hover{border-color:var(--brand);color:var(--brand)}
+.slider-row{margin-bottom:16px}
+.slider-row label{display:flex;justify-content:space-between;font-weight:700;font-size:13.5px;margin-bottom:6px}
+.slider-row label span{color:var(--brand);font-weight:800}
+input[type=range]{width:100%;accent-color:var(--brand);height:6px}
+.result-box{
+  border-radius:16px;padding:24px;text-align:center;background:#f4f8fb;border:1px solid var(--line);
+  transition:.3s;
+}
+.result-box.superavit{background:var(--ok-soft);border-color:#86efac}
+.result-box.deficit{background:var(--danger-soft);border-color:#fca5a5}
+.result-box .verdict{font-size:26px;font-weight:900;margin-bottom:4px}
+.result-box.superavit .verdict{color:#065f46}
+.result-box.deficit .verdict{color:#991b1b}
+.result-box .amount{font-size:40px;font-weight:900;margin:8px 0}
+.bar-wrap{margin-top:18px;background:#e2e8f0;border-radius:999px;height:22px;position:relative;overflow:hidden}
+.bar-mid{position:absolute;left:50%;top:0;bottom:0;width:2px;background:#94a3b8}
+.bar-fill{position:absolute;top:0;bottom:0;left:50%;transition:.4s;border-radius:999px}
+.bar-fill.pos{background:var(--ok)}
+.bar-fill.neg{background:var(--danger)}
+.sim-note{font-size:12.5px;color:var(--ink-soft);margin-top:14px}
+
+/* ============================================================
+   CUESTIONARIO
+============================================================ */
+.quiz-progress{position:sticky;top:52px;z-index:50;background:var(--paper);border:1px solid var(--line);
+  border-radius:14px;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;
+  box-shadow:var(--shadow);margin-bottom:26px;flex-wrap:wrap;gap:10px}
+.quiz-progress b{font-size:20px;color:var(--brand)}
+.q{border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px;background:#fff}
+.q .q-sub{font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.q .q-text{font-weight:700;font-size:16px;margin-bottom:14px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{
+  cursor:pointer;border:1.5px solid var(--line);border-radius:12px;padding:12px 15px;
+  font-size:14px;display:flex;gap:10px;align-items:center;transition:.18s;background:#fff;
+}
+.opt:hover{border-color:var(--brand)}
+.opt .letter{width:26px;height:26px;border-radius:8px;background:#eef3f8;display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.opt.chosen{border-color:var(--brand)}
+.opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.opt.correct .letter{background:var(--ok);color:#fff}
+.opt.incorrect{border-color:var(--danger);background:var(--danger-soft)}
+.opt.incorrect .letter{background:var(--danger);color:#fff}
+.opt.locked{pointer-events:none}
+.q-feedback{margin-top:12px;font-size:13.5px;font-weight:600;padding:11px 14px;border-radius:10px;display:none}
+.q-feedback.show{display:block}
+.q-feedback.ok{background:var(--ok-soft);color:#065f46}
+.q-feedback.no{background:var(--danger-soft);color:#991b1b}
+.final{
+  border-radius:18px;padding:34px;text-align:center;margin-top:14px;
+  background:linear-gradient(160deg,#0b1f33,#0e7c86);color:#fff;display:none;
+}
+.final.show{display:block;animation:fade .5s ease}
+.final .big{font-size:56px;font-weight:900}
+.final p{color:#d7e6ea}
+.final .btn{margin-top:18px}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer{background:var(--ink);color:#c7d3de;padding:44px 22px;text-align:center}
+footer .wrap{display:flex;flex-direction:column;gap:8px;align-items:center}
+footer b{color:#fff}
+.badge-list{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.badge-list span{background:rgba(255,255,255,.1);padding:6px 12px;border-radius:999px;font-size:12px}
+.divider{height:1px;background:var(--line);margin:40px 0}
+
+/* ---------- Listas (viñetas) ---------- */
+.lead-list{list-style:none;max-width:760px;margin:0 0 30px;padding:0}
+.lead-list li{position:relative;padding-left:22px;margin-bottom:8px;color:var(--ink-soft);font-size:clamp(15px,2vw,18px)}
+.lead-list li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--brand)}
+.hero-list{list-style:none;max-width:62ch;margin:0 0 28px;padding:0}
+.hero-list li{position:relative;padding-left:22px;margin-bottom:8px;color:#d7e6ea;font-size:clamp(15px,2.2vw,19px)}
+.hero-list li::before{content:"";position:absolute;left:2px;top:.6em;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.help-list{margin:8px 0 16px 18px !important;font-size:13.5px}
+.help-list li{margin-bottom:3px !important}
+.card ul ul{margin-top:6px}
+ul.syl>li{margin-bottom:12px}
+.callout ul{margin:6px 0 0 18px}
+.callout li{color:#7c2d12;margin-bottom:4px}
+.cert-back ul{list-style:disc;text-align:left;margin:0 0 0 16px;padding:0}
+.cert-back li{color:#eafaf8;font-size:12.5px;line-height:1.45;margin-bottom:3px}
+/* ---------- Caso Ecuador (barras divergentes) ---------- */
+.case-bars{margin:14px 0 14px}
+.cb-row{display:grid;grid-template-columns:minmax(120px,170px) 1fr 100px;align-items:center;gap:10px;margin-bottom:8px;font-size:13.5px}
+.cb-label{font-weight:700;color:var(--ink)}
+.cb-track{position:relative;height:20px;background:#eef3f8;border-radius:999px;overflow:hidden}
+.cb-track::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:#94a3b8}
+.cb-fill{position:absolute;top:0;bottom:0}
+.cb-fill.pos{left:50%;background:var(--ok);border-radius:0 999px 999px 0}
+.cb-fill.neg{right:50%;background:var(--danger);border-radius:999px 0 0 999px}
+.cb-val{text-align:right;font-weight:800}
+.cb-val.pos{color:var(--ok)}
+.cb-val.neg{color:var(--danger)}
+.cb-row.total{border-top:2px solid var(--line);padding-top:10px;margin-top:6px}
+.cb-row.total .cb-label,.cb-row.total .cb-val{font-size:15px}
+.src{font-size:12px;color:var(--ink-soft);margin-top:10px}
+@media(max-width:560px){.cb-row{grid-template-columns:1fr 90px}.cb-track{grid-column:1/-1;order:3}}
+/* ---------- Portada compacta: cabe completa en una pantalla ---------- */
+.hero{padding:42px 22px 36px}
+.hero .pill{margin-bottom:16px}
+.hero h1{font-size:clamp(28px,4.4vw,50px);max-width:none;margin-bottom:14px}
+.hero-list{max-width:80ch;margin-bottom:20px}
+.hero-list li{font-size:clamp(15px,1.7vw,18px);margin-bottom:5px}
+.hero-cards{margin-top:24px;gap:14px}
+.hero-cards .hc{padding:13px 16px}
+.hero-cards .hc b{font-size:24px}
+
+/* ---------- Unidad 3 dividida en dos partes ---------- */
+.clsb{display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,#0b1f33,#0e5a66 70%,#0e7c86);color:#fff;border-radius:18px;padding:18px 24px;margin-bottom:30px;box-shadow:var(--shadow)}
+.clsb-num{flex:none;background:var(--accent);color:#3b2400;font-weight:900;border-radius:12px;padding:8px 16px;text-align:center;line-height:1.15;font-size:20px}
+.clsb-num small{display:block;font-size:10.5px;letter-spacing:1px;text-transform:uppercase}
+.clsb h3{color:#fff;font-size:20px;margin:0}
+.clsb ul{margin:0 0 0 18px}
+.clsb li{color:#d7e6ea;font-size:13.5px;margin-bottom:2px}
+@media(max-width:560px){.clsb{flex-direction:column;gap:10px}}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:1000px){.grid-4{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.grid-4{grid-template-columns:1fr}}
+.card .clase-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--brand);margin-bottom:6px}
+.formula{font-size:clamp(18px,3vw,28px);font-weight:900;text-align:center;color:var(--brand);background:#f4f8fb;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:14px 0}
+.formula small{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-top:4px}
+.bp-tree{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:10px}
+@media(max-width:900px){.bp-tree{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.bp-tree{grid-template-columns:1fr}}
+.bp-col{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff;border-top:4px solid var(--brand)}
+.bp-col.k{border-top-color:var(--accent)}
+.bp-col.f{border-top-color:var(--growth)}
+.bp-col.e{border-top-color:#94a3b8}
+.bp-col h4{font-size:15px;margin-bottom:6px}
+.bp-col ul{margin:6px 0 0 16px}
+.bp-col li{font-size:13.5px;color:var(--ink-soft);margin-bottom:3px}
+.cmp-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
+.cmp-table th,.cmp-table td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.cmp-table th{background:#f4f8fb;font-weight:800;color:var(--ink)}
+.cmp-table td:first-child{font-weight:700;color:var(--ink)}
+.num-in{font-family:var(--font);font-size:14px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);width:140px;color:var(--ink)}
+.cuadra-item{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}
+.cuadra-item .q-ask{font-weight:700;margin-bottom:10px}
+.cuadra-item .mini-table{margin-top:0;margin-bottom:12px;max-width:520px}
+.cuadra-item .mini-table td:last-child{text-align:right;font-weight:800;white-space:nowrap}
+.qbar-row{display:grid;grid-template-columns:120px 1fr 56px;align-items:center;gap:8px;margin-bottom:6px;font-size:13px}
+.qbar-track{height:16px;background:#eef3f8;border-radius:999px;overflow:hidden}
+.qbar-fill{height:100%;background:var(--brand);border-radius:999px;transition:width .3s}
+.qbar-row b{text-align:right}
+.lz-svg{width:100%;max-width:340px;height:auto;display:block;margin:0 auto}
+.lz-svg text{font-family:var(--font);font-size:9px;fill:#33475b}
+.pos-neg{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:820px){.pos-neg{grid-template-columns:1fr}}
+.choice-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.sbtn.ok{border-color:var(--ok);background:var(--ok-soft);color:#065f46}
+.sbtn.no{border-color:var(--danger);background:var(--danger-soft);color:#991b1b}
+.sbtn[disabled]{cursor:default}
+.hero-link{text-align:center;margin-top:16px}
+.hero.hero-min{padding:64px 22px}
+.hero.hero-min h1{margin:0}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#inicio" class="brand">
+      <span class="logo">U3</span>
+      <span>Unidad 3 · Parte 1</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menú">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#balanza">3.1.1 Definición</a>
+      <a href="#estructura">3.1.2 Estructura y registro</a>
+      <a href="#interpretacion">3.1.3 Déficit/Superávit</a>
+      <a href="#quiz">Evaluación</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== INICIO ===================== -->
+<section class="hero hero-min" id="inicio">
+  <div class="wrap">
+    <h1>Balanza de pagos</h1>
+  </div>
+</section>
+
+<!-- ===================== CLASE 1 · 3.1.1 ===================== -->
+<section id="balanza" style="background:linear-gradient(180deg,#fff,#f4f8fb)">
+  <div class="wrap">
+    <div class="clsb reveal">
+      <div class="clsb-num"><small>Clase</small>1</div>
+      <div><h3>3.1.1 · Definición y marco de la balanza de pagos</h3></div>
+    </div>
+    <span class="eyebrow reveal">3.1.1 · Definición</span>
+    <h2 class="section-title reveal">¿Qué es la balanza de pagos?</h2>
+    <ul class="lead-list reveal">
+      <li>Registro sistemático de las transacciones entre los residentes de un país y el resto del mundo.</li>
+      <li>Se elabora para un periodo determinado (en Ecuador, trimestral y anual).</li>
+      <li>Es una herramienta de registro contable y económico.</li>
+    </ul>
+
+    <div class="grid-3">
+      <div class="card reveal d1">
+        <h3>📐 Estándar MBP6</h3>
+        <ul>
+          <li>El <b><a href="https://www.imf.org/-/media/websites/imf/imported-publications-loe-pdfs/external/spanish/pubs/ft/bop/2007/bopman6s.pdf" target="_blank" rel="noopener noreferrer">Sexto Manual de Balanza de Pagos</a></b> es del Fondo Monetario Internacional (FMI).</li>
+          <li>Define una metodología común.</li>
+          <li>Hace comparables las cifras entre países.</li>
+        </ul>
+      </div>
+      <div class="card reveal d2">
+        <h3>➕➖ Partida doble</h3>
+        <ul>
+          <li>Cada transacción se registra <b>dos veces</b>.</li>
+          <li><b>Crédito (+):</b> entrada de recursos desde el exterior.</li>
+          <li><b>Débito (−):</b> salida de recursos hacia el exterior.</li>
+          <li>Por eso, en teoría, la balanza total siempre cuadra en cero.</li>
+        </ul>
+      </div>
+      <div class="card reveal d3">
+        <h3>🗂️ Tres cuentas</h3>
+        <ul>
+          <li><b>Cuenta corriente</b></li>
+          <li><b>Cuenta de capital</b></li>
+          <li><b>Cuenta financiera</b></li>
+          <li>Cada transacción se ubica en una de ellas.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:22px">
+      <div class="card reveal d1">
+        <h3>🌍 Residentes y no residentes</h3>
+        <ul>
+          <li>La BP clasifica por <b>residencia económica</b>, no por nacionalidad.</li>
+          <li>Se registra lo que ocurre entre residentes y no residentes.</li>
+          <li>Quien vive más de un año en otro país suele ser residente de ese país.</li>
+          <li>Por eso lo que envía a su familia se registra como <b>remesa</b>.</li>
+        </ul>
+      </div>
+      <div class="card reveal d2">
+        <h3>Ejemplo de partida doble</h3>
+        <ul class="help-list">
+          <li>Ecuador exporta banano por USD 100.</li>
+          <li>El exportador deja el cobro en un banco del exterior.</li>
+        </ul>
+        <table class="mini-table">
+          <tr><th>Asiento</th><th>Cuenta</th><th>Signo</th></tr>
+          <tr><td>Exportación de banano</td><td>Corriente</td><td class="sign-plus">Crédito +100</td></tr>
+          <tr><td>Cobro en el exterior</td><td>Financiera</td><td class="sign-minus">Débito −100</td></tr>
+          <tr><td><b>Total</b></td><td></td><td><b>0</b></td></tr>
+        </table>
+        <ul>
+          <li>El cobro es un activo financiero que el país adquiere en el exterior.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card reveal" style="margin-top:22px">
+      <span class="eyebrow">Para no confundir</span>
+      <h3>Balanza de pagos vs. balanza comercial</h3>
+      <table class="cmp-table">
+        <tr><th></th><th>Balanza comercial</th><th>Balanza de pagos</th></tr>
+        <tr><td>Qué registra</td><td>Exportaciones e importaciones de <b>bienes</b></td><td>Todas las transacciones con el exterior</td></tr>
+        <tr><td>Dónde se ubica</td><td>Es un componente de la cuenta corriente</td><td>Incluye la balanza comercial y mucho más</td></tr>
+        <tr><td>Saldo</td><td>Exportaciones − importaciones</td><td>Cuadra en cero (partida doble)</td></tr>
+        <tr><td>Ejemplo</td><td>Exportación de camarón</td><td>Remesas, intereses, IED, condonaciones</td></tr>
+      </table>
+    </div>
+
+    <!-- DINÁMICA 1: CLASIFICADOR -->
+    <div class="card reveal" style="margin-top:26px">
+      <span class="eyebrow">Dinámica interactiva</span>
+      <h3>Clasificador: ¿balanza comercial o solo balanza de pagos?</h3>
+      <ul class="help-list">
+        <li>Arrastra cada operación al recuadro correcto.</li>
+        <li>En pantallas táctiles: toca una tarjeta y luego toca el recuadro de destino.</li>
+        <li>Al terminar, pulsa <b>Comprobar</b>.</li>
+      </ul>
+
+      <div class="pool" id="pool" data-zone="pool"></div>
+
+      <div class="bins">
+        <div class="bin growth" data-bin="a">
+          <h4><span class="badge">BALANZA COMERCIAL</span> Solo bienes</h4>
+          <div class="drop-area" id="binA" data-zone="a"></div>
+        </div>
+        <div class="bin dev" data-bin="b">
+          <h4><span class="badge">SOLO EN LA BP</span> No es comercio de bienes</h4>
+          <div class="drop-area" id="binB" data-zone="b"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-check" id="dndCheck">Comprobar</button>
+        <button class="btn btn-reset" id="dndReset">Reiniciar</button>
+        <span class="score-tag" id="dndScore">Sin evaluar</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CLASE 2 · 3.1.2 ===================== -->
+<section id="estructura">
+  <div class="wrap">
+    <div class="clsb reveal">
+      <div class="clsb-num"><small>Clase</small>2</div>
+      <div><h3>3.1.2 · Estructura y registro técnico de transacciones</h3></div>
+    </div>
+    <span class="eyebrow reveal">3.1.2 · Estructura y registro</span>
+    <h2 class="section-title reveal">Estructura y registro técnico de la balanza de pagos</h2>
+    <ul class="lead-list reveal">
+      <li>Primero, el mapa completo de la balanza.</li>
+      <li>Luego, el registro de transacciones: cuenta y signo.</li>
+      <li>Por último, el cuadre con errores y omisiones.</li>
+    </ul>
+
+    <div class="card reveal">
+      <span class="eyebrow">Mapa de la BP</span>
+      <h3>Componentes según el MBP6</h3>
+      <div class="bp-tree">
+        <div class="bp-col">
+          <h4>Cuenta corriente</h4>
+          <ul><li>Bienes</li><li>Servicios</li><li>Ingreso primario</li><li>Ingreso secundario</li></ul>
+        </div>
+        <div class="bp-col k">
+          <h4>Cuenta de capital</h4>
+          <ul><li>Transferencias de capital</li><li>Activos no producidos no financieros</li></ul>
+        </div>
+        <div class="bp-col f">
+          <h4>Cuenta financiera</h4>
+          <ul><li>Inversión directa (IED)</li><li>Inversión de cartera</li><li>Derivados financieros</li><li>Otra inversión</li><li>Activos de reserva</li></ul>
+        </div>
+        <div class="bp-col e">
+          <h4>Errores y omisiones</h4>
+          <ul><li>Partida de ajuste estadístico</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Explorador por pestañas -->
+    <div class="card reveal" style="margin-top:24px">
+      <span class="eyebrow">Explorador interactivo</span>
+      <h3>Las tres cuentas de la BP (MBP6)</h3>
+      <div class="tabs" id="bpTabs">
+        <button class="tab-btn active" data-tab="corriente">Cuenta corriente</button>
+        <button class="tab-btn" data-tab="capital">Cuenta de capital</button>
+        <button class="tab-btn" data-tab="financiera">Cuenta financiera</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-corriente">
+        <div class="acct-head"><div class="acct-ico c">🛒</div><div><h3>Cuenta corriente</h3></div></div>
+        <ul>
+          <li>Transacciones "reales" del día a día con el exterior.</li>
+          <li>Comercio de <b>bienes</b> y de <b>servicios</b>.</li>
+          <li><b>Ingreso primario:</b> rentas como intereses, dividendos y salarios.</li>
+          <li><b>Ingreso secundario:</b> transferencias sin contrapartida, como las <b>remesas</b>.</li>
+        </ul>
+        <table class="mini-table">
+          <tr><th>Transacción</th><th>Signo</th></tr>
+          <tr><td>Exportación de banano</td><td class="sign-plus">Crédito (+)</td></tr>
+          <tr><td>Importación de maquinaria</td><td class="sign-minus">Débito (−)</td></tr>
+          <tr><td>Remesas recibidas del exterior</td><td class="sign-plus">Crédito (+)</td></tr>
+          <tr><td>Pago de intereses de deuda</td><td class="sign-minus">Débito (−)</td></tr>
+        </table>
+      </div>
+
+      <div class="tab-panel" id="tab-capital">
+        <div class="acct-head"><div class="acct-ico k">🏛️</div><div><h3>Cuenta de capital</h3></div></div>
+        <ul>
+          <li>Es la cuenta más pequeña.</li>
+          <li><b>Transferencias de capital:</b> condonaciones de deuda, donaciones para inversión.</li>
+          <li><b>Activos no producidos no financieros:</b> terrenos vendidos a embajadas, contratos de arrendamiento y licencias transferibles.</li>
+        </ul>
+        <table class="mini-table">
+          <tr><th>Transacción</th><th>Signo</th></tr>
+          <tr><td>Condonación de deuda a favor del país</td><td class="sign-plus">Crédito (+)</td></tr>
+          <tr><td>Venta de un terreno a una embajada extranjera</td><td class="sign-plus">Crédito (+)</td></tr>
+          <tr><td>Donación de capital para reconstrucción</td><td class="sign-plus">Crédito (+)</td></tr>
+        </table>
+      </div>
+
+      <div class="tab-panel" id="tab-financiera">
+        <div class="acct-head"><div class="acct-ico f">💱</div><div><h3>Cuenta financiera</h3></div></div>
+        <ul>
+          <li>Movimientos de activos y pasivos financieros frente al exterior.</li>
+          <li>Cinco categorías: inversión directa (IED), inversión de cartera (acciones y bonos), derivados financieros, otra inversión (préstamos y depósitos) y activos de reserva.</li>
+          <li><b>Convención simplificada del curso:</b> crédito (+) = ingreso de capital al país; débito (−) = salida.</li>
+          <li>En el MBP6 estricto se registra la adquisición neta de activos y la emisión neta de pasivos financieros.</li>
+        </ul>
+        <table class="mini-table">
+          <tr><th>Transacción</th><th>Signo</th></tr>
+          <tr><td>IED extranjera en una planta local</td><td class="sign-plus">Crédito (+)</td></tr>
+          <tr><td>Un banco local compra bonos de EE.UU.</td><td class="sign-minus">Débito (−)</td></tr>
+          <tr><td>Extranjeros compran acciones locales</td><td class="sign-plus">Crédito (+)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- DINÁMICA 2: REGISTRADOR DE TRANSACCIONES -->
+    <div class="card reveal" style="margin-top:24px">
+      <span class="eyebrow">Dinámica interactiva</span>
+      <h3>Registra la transacción</h3>
+      <ul class="help-list">
+        <li>Elige la <b>cuenta</b> y el <b>signo</b> (crédito o débito) de cada operación.</li>
+        <li>El sistema valida al instante y explica el porqué.</li>
+      </ul>
+      <div class="reg-list" id="regList"></div>
+      <div class="controls">
+        <span class="score-tag" id="regScore">0 / 0 correctas</span>
+      </div>
+    </div>
+
+    <!-- ERRORES Y OMISIONES + RESERVAS -->
+    <div class="grid-2" style="margin-top:24px">
+      <div class="card reveal d1">
+        <h3>Errores y omisiones netos</h3>
+        <ul>
+          <li>En la práctica, las fuentes de datos no cuadran exactamente.</li>
+          <li>Esta partida recoge la diferencia estadística.</li>
+          <li>Su signo indica el desajuste de los datos, no un flujo real.</li>
+          <li>Se calcula como lo que falta para que el total sea cero.</li>
+        </ul>
+      </div>
+      <div class="card reveal d2">
+        <h3>Activos de reserva</h3>
+        <ul>
+          <li>Activos externos que controla la autoridad monetaria.</li>
+          <li>Incluyen divisas, oro monetario y derechos especiales de giro (DEG).</li>
+          <li>Forman parte de la cuenta financiera.</li>
+          <li>En Ecuador, los administra el Banco Central del Ecuador (BCE).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card reveal" style="margin-top:24px">
+      <span class="eyebrow">Identidad contable</span>
+      <h3>¿Cómo cuadra la balanza?</h3>
+      <div class="formula">CC + CK + CF + EyO = 0
+        <small>Cuenta corriente + Cuenta de capital + Cuenta financiera + Errores y omisiones</small></div>
+      <ul>
+        <li>Con la convención del curso, la cuenta financiera se escribe como entradas menos salidas de capital.</li>
+        <li>Un déficit corriente se compensa con entrada neta de capital.</li>
+        <li>El MBP6 estricto presenta la cuenta financiera como adquisición neta de activos menos emisión neta de pasivos: cambia la presentación, no la lógica.</li>
+      </ul>
+    </div>
+
+    <!-- DINÁMICA 3: CUADRA LA BALANZA -->
+    <div class="card reveal" style="margin-top:24px">
+      <span class="eyebrow">Taller</span>
+      <h3>Cuadra la balanza de Costaluz</h3>
+      <ul class="help-list">
+        <li>País ficticio. Cifras en millones de USD.</li>
+        <li>Completa la cuenta que falta para que el total sea cero.</li>
+        <li>Escribe el signo si es negativo, por ejemplo −300.</li>
+      </ul>
+      <div class="reg-list" id="cuadraList"></div>
+      <div class="controls">
+        <span class="score-tag" id="cuadraScore">0 / 0 correctas</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CLASE 3 · 3.1.3 ===================== -->
+<section id="interpretacion" style="background:linear-gradient(180deg,#f4f8fb,#fff)">
+  <div class="wrap">
+    <div class="clsb reveal">
+      <div class="clsb-num"><small>Clase</small>3</div>
+      <div><h3>3.1.3 · Interpretación económica de déficits y superávits</h3></div>
+    </div>
+    <span class="eyebrow reveal">3.1.3 · Déficits y superávits</span>
+    <h2 class="section-title reveal">Interpretación económica de déficits y superávits</h2>
+    <ul class="lead-list reveal">
+      <li><b>Superávit:</b> los créditos superan a los débitos.</li>
+      <li><b>Déficit:</b> los débitos superan a los créditos.</li>
+      <li>Ninguno es siempre "bueno" ni siempre "malo": depende del contexto.</li>
+      <li>La balanza total siempre cuadra; el saldo se analiza por cuenta, por ejemplo la cuenta corriente.</li>
+    </ul>
+
+    <div class="grid-2">
+      <div class="card reveal d1" style="border-top:4px solid var(--ok)">
+        <h3>Superávit (+)</h3>
+        <ul>
+          <li>El país recibe más de lo que paga al exterior.</li>
+          <li>Suele reflejar exportaciones fuertes o entrada de remesas e inversión.</li>
+          <li>Puede indicar competitividad.</li>
+          <li>Si es muy alto, puede señalar un consumo interno débil.</li>
+          <li>Se refleja en salida neta de capital o en más reservas.</li>
+        </ul>
+      </div>
+      <div class="card reveal d2" style="border-top:4px solid var(--danger)">
+        <h3>Déficit (−)</h3>
+        <ul>
+          <li>El país paga más de lo que recibe del exterior.</li>
+          <li>Puede deberse a fuertes importaciones o al pago de rentas.</li>
+          <li>No siempre es negativo: importar bienes de capital puede impulsar el crecimiento futuro.</li>
+          <li>Se financia con entrada de capital (inversión, deuda) o con reservas.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:24px">
+      <div class="card reveal d1">
+        <h3>¿Cómo se financia un déficit?</h3>
+        <ul>
+          <li><b>IED:</b> financia sin generar deuda.</li>
+          <li><b>Préstamos y bonos:</b> generan deuda y pagos futuros de intereses (ingreso primario, débito).</li>
+          <li><b>Reservas:</b> la autoridad monetaria usa activos externos acumulados.</li>
+          <li><b>Ajuste:</b> menor demanda interna reduce las importaciones.</li>
+          <li>Financiar con IED o con deuda no es lo mismo.</li>
+        </ul>
+      </div>
+      <div class="card reveal d2">
+        <h3>Ecuador dolarizado: ¿qué cambia?</h3>
+        <ul>
+          <li>Desde el año 2000, Ecuador usa el dólar como moneda.</li>
+          <li>Sin moneda propia, no puede devaluar para corregir el déficit.</li>
+          <li>Una salida neta sostenida de dólares reduce la liquidez de la economía.</li>
+          <li>El ajuste recae en la economía real: menor demanda e importaciones.</li>
+          <li>Por eso pesan las remesas, la IED y el acceso a financiamiento externo.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CASO REAL: ECUADOR 2025 -->
+    <div class="card reveal" style="margin-top:24px;border-top:4px solid var(--brand)">
+      <span class="eyebrow">Caso real · Ecuador 2025</span>
+      <h3>La cuenta corriente de Ecuador en 2025</h3>
+      <ul class="help-list">
+        <li>Saldos en millones de USD, según el Banco Central del Ecuador (BCE).</li>
+        <li>Verde: crédito neto (+). Rojo: débito neto (−).</li>
+      </ul>
+      <div class="case-bars">
+        <div class="cb-row"><span class="cb-label">Bienes</span><div class="cb-track"><div class="cb-fill pos" style="width:39.8%"></div></div><span class="cb-val pos">+6,360.6</span></div>
+        <div class="cb-row"><span class="cb-label">Servicios</span><div class="cb-track"><div class="cb-fill neg" style="width:13.0%"></div></div><span class="cb-val neg">−2,081.4</span></div>
+        <div class="cb-row"><span class="cb-label">Ingreso primario</span><div class="cb-track"><div class="cb-fill neg" style="width:22.6%"></div></div><span class="cb-val neg">−3,612.8</span></div>
+        <div class="cb-row"><span class="cb-label">Ingreso secundario</span><div class="cb-track"><div class="cb-fill pos" style="width:43.9%"></div></div><span class="cb-val pos">+7,031.7</span></div>
+        <div class="cb-row total"><span class="cb-label">Cuenta corriente</span><div class="cb-track"><div class="cb-fill pos" style="width:48.1%"></div></div><span class="cb-val pos">+7,698.0</span></div>
+      </div>
+      <ul>
+        <li>Ecuador cerró 2025 con <b>superávit</b> en cuenta corriente: <b>+USD 7,698.0 millones</b>.</li>
+        <li>En 2024 fue de +7,042.5 millones: el superávit aumentó 655.5 millones.</li>
+        <li>Servicios e ingreso primario restan: son débitos netos.</li>
+        <li>El ingreso secundario lo impulsa: las <b>remesas</b> sumaron 7,729.5 millones, un récord.</li>
+        <li>Sin el ingreso secundario, el saldo sería de solo +666.4 millones (cálculo propio).</li>
+        <li><b>Para discutir:</b> ¿qué pasaría con el saldo si las remesas cayeran?</li>
+      </ul>
+    </div>
+
+    <!-- DINÁMICA 4: SIMULADOR -->
+    <div class="card reveal" style="margin-top:24px">
+      <span class="eyebrow">Dinámica interactiva</span>
+      <h3>Simulador de saldos macroeconómicos</h3>
+      <ul class="help-list">
+        <li>Elige un escenario o mueve los deslizadores.</li>
+        <li>El sistema calcula el saldo de la cuenta corriente y valida si es <b>déficit</b> o <b>superávit</b>.</li>
+        <li>Valores ficticios, en millones de USD.</li>
+      </ul>
+
+      <div class="scenario-btns" id="scenarios">
+        <button class="sbtn" data-x="8000" data-m="6000" data-r="3000" data-i="1500">🌱 Economía exportadora</button>
+        <button class="sbtn" data-x="4000" data-m="9000" data-r="2000" data-i="2500">📉 Alta importación</button>
+        <button class="sbtn" data-x="6000" data-m="6000" data-r="3000" data-i="3000">⚖️ Equilibrio frágil</button>
+      </div>
+
+      <div class="sim-grid">
+        <div>
+          <div class="slider-row">
+            <label>Exportaciones de bienes <span id="vX">6 000</span></label>
+            <input type="range" id="sX" min="0" max="12000" step="100" value="6000">
+          </div>
+          <div class="slider-row">
+            <label>Importaciones de bienes <span id="vM">6 000</span></label>
+            <input type="range" id="sM" min="0" max="12000" step="100" value="6000">
+          </div>
+          <div class="slider-row">
+            <label>Remesas recibidas (+) <span id="vR">3 000</span></label>
+            <input type="range" id="sR" min="0" max="6000" step="100" value="3000">
+          </div>
+          <div class="slider-row">
+            <label>Pago de intereses de deuda (−) <span id="vI">2 000</span></label>
+            <input type="range" id="sI" min="0" max="6000" step="100" value="2000">
+          </div>
+          <p class="sim-note">Saldo cuenta corriente ≈ (Exportaciones − Importaciones) + Remesas − Intereses.</p>
+        </div>
+        <div>
+          <div class="result-box" id="simBox">
+            <div class="verdict" id="simVerdict">Ajusta los valores</div>
+            <div class="amount" id="simAmount">0</div>
+            <div id="simMsg" style="font-size:13.5px"></div>
+            <div class="bar-wrap"><div class="bar-mid"></div><div class="bar-fill" id="simBar"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- ===================== CUESTIONARIO ===================== -->
+<section id="quiz" style="background:linear-gradient(180deg,#f4f8fb,#fff)">
+  <div class="wrap">
+    <span class="eyebrow reveal">Autoevaluación</span>
+    <h2 class="section-title reveal">Cuestionario de autoevaluación</h2>
+    <ul class="lead-list reveal"><li>10 preguntas sobre las clases 1, 2 y 3.</li><li>4 opciones por pregunta, con retroalimentación inmediata.</li><li>El puntaje se calcula automáticamente.</li><li>Actividad participativa: no tiene calificación.</li></ul>
+
+    <div class="quiz-progress">
+      <span>Progreso: <b id="qAnswered">0</b> / 10 respondidas</span>
+      <span>Puntaje: <b id="qScore">0</b> / 10</span>
+    </div>
+
+    <div id="quizBox"></div>
+
+    <div class="final" id="finalBox">
+      <div class="big" id="finalScore">0 / 10</div>
+      <div id="finalPct" style="font-size:20px;font-weight:800"></div>
+      <p id="finalMsg"></p>
+      <button class="btn btn-primary" id="quizReset">Reiniciar cuestionario</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <b>Unidad 3 · Balanza de Pagos e Impacto Económico · Parte 1</b>
+    <span>Introducción al Comercio Internacional · Carrera de Comercio Internacional y Logística</span>
+    <span>Universidad Católica de Cuenca</span>
+    <span style="font-size:11.5px;margin-top:10px">Este recurso fue hecho parcialmente con IA generativa.</span>
+  </div>
+</footer>
+
+
+<script>
+/* ============================================================
+   UTILIDADES GENERALES
+============================================================ */
+const $  = (s,c=document)=>c.querySelector(s);
+const $$ = (s,c=document)=>Array.from(c.querySelectorAll(s));
+const fmt = n => n.toLocaleString('en-US');
+const sgn = n => (n>0?'+':n<0?'−':'')+fmt(Math.abs(n));
+
+window.addEventListener('scroll',()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop)/(h.scrollHeight - h.clientHeight)*100;
+  $('#progress').style.width = pct + '%';
+});
+
+$('#navToggle').addEventListener('click',()=> $('#navLinks').classList.toggle('open'));
+$$('#navLinks a').forEach(a=>a.addEventListener('click',()=> $('#navLinks').classList.remove('open')));
+
+const revObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); revObserver.unobserve(e.target); } });
+},{threshold:0.15});
+$$('.reveal').forEach(el=>revObserver.observe(el));
+
+const navMap = {};
+$$('#navLinks a').forEach(a=>{ (a.dataset.sec||a.getAttribute('href').slice(1)).split(' ').forEach(id=>{ navMap[id]=a; }); });
+const secIds = Object.keys(navMap);
+const navObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      $$('#navLinks a').forEach(a=>a.classList.remove('active'));
+      const link = navMap[e.target.id];
+      if(link) link.classList.add('active');
+    }
+  });
+},{rootMargin:'-45% 0px -50% 0px'});
+secIds.forEach(id=>{ const el=document.getElementById(id); if(el) navObserver.observe(el); });
+
+function shuffle(arr){ return arr.map(a=>[Math.random(),a]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]); }
+
+const dndItems = [
+  {id:'i1', text:'Exportación de camarón', cat:'a'},
+  {id:'i2', text:'Importación de maquinaria', cat:'a'},
+  {id:'i3', text:'Exportación de petróleo crudo', cat:'a'},
+  {id:'i4', text:'Importación de vehículos', cat:'a'},
+  {id:'i5', text:'Remesas enviadas desde España', cat:'b'},
+  {id:'i6', text:'Pago de intereses de la deuda externa', cat:'b'},
+  {id:'i7', text:'Inversión extranjera directa en una planta local', cat:'b'},
+  {id:'i8', text:'Venta de un terreno a una embajada extranjera', cat:'b'}
+];
+
+/* ============================================================
+   CLASIFICADOR · ARRASTRAR Y SOLTAR (dos recuadros: a y b)
+============================================================ */
+let dndSelected = null;
+function buildDnD(){
+  const pool = $('#pool'); pool.innerHTML='';
+  $('#binA').innerHTML=''; $('#binB').innerHTML='';
+  $('#dndScore').textContent='Sin evaluar'; $('#dndScore').className='score-tag';
+  shuffle(dndItems).forEach(it=>{
+    const chip = document.createElement('div');
+    chip.className='chip'; chip.textContent=it.text;
+    chip.draggable=true; chip.dataset.id=it.id; chip.dataset.cat=it.cat;
+    chip.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain',it.id); chip.classList.add('dragging'); });
+    chip.addEventListener('dragend',()=>chip.classList.remove('dragging'));
+    chip.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      if(dndSelected===chip){ chip.classList.remove('selected'); dndSelected=null; return; }
+      $$('.chip.selected').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected'); dndSelected=chip;
+    });
+    pool.appendChild(chip);
+  });
+}
+function setupZone(zoneEl){
+  zoneEl.addEventListener('dragover',e=>{ e.preventDefault(); const bin=zoneEl.closest('.bin'); if(bin) bin.classList.add('over'); });
+  zoneEl.addEventListener('dragleave',()=>{ const bin=zoneEl.closest('.bin'); if(bin) bin.classList.remove('over'); });
+  zoneEl.addEventListener('drop',e=>{
+    e.preventDefault();
+    const bin=zoneEl.closest('.bin'); if(bin) bin.classList.remove('over');
+    const id=e.dataTransfer.getData('text/plain');
+    const chip=$('.chip[data-id="'+id+'"]');
+    if(chip){ chip.classList.remove('correct','wrong','selected'); zoneEl.appendChild(chip); }
+  });
+  zoneEl.addEventListener('click',()=>{
+    if(dndSelected){ dndSelected.classList.remove('correct','wrong','selected'); zoneEl.appendChild(dndSelected); dndSelected=null; }
+  });
+}
+['#pool','#binA','#binB'].forEach(sel=>setupZone($(sel)));
+$('#dndCheck').addEventListener('click',()=>{
+  let correct=0, placed=0;
+  [['#binA','a'],['#binB','b']].forEach(([sel,cat])=>{
+    $$('.chip',$(sel)).forEach(ch=>{ placed++; const ok=ch.dataset.cat===cat; ch.classList.toggle('correct',ok); ch.classList.toggle('wrong',!ok); if(ok)correct++; });
+  });
+  const tag=$('#dndScore'), n=dndItems.length;
+  if(placed<n){ tag.textContent='Coloca las '+n+' tarjetas ('+placed+'/'+n+')'; tag.className='score-tag'; return; }
+  tag.textContent=correct+' / '+n+' correctas';
+  tag.className='score-tag '+(correct===n?'good':'bad');
+});
+$('#dndReset').addEventListener('click',buildDnD);
+buildDnD();
+
+/* ============================================================
+   PESTAÑAS DE LA BALANZA DE PAGOS
+============================================================ */
+$$('#bpTabs .tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    $$('#bpTabs .tab-btn').forEach(b=>b.classList.remove('active'));
+    $$('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    $('#tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ============================================================
+   REGISTRADOR DE TRANSACCIONES
+============================================================ */
+const transactions = [
+  {t:'Ecuador exporta banano a Europa', acct:'corriente', sign:'credito', why:'Es venta de bienes al exterior: cuenta corriente, crédito (+) porque ingresan divisas.'},
+  {t:'Ecuador importa maquinaria industrial desde China', acct:'corriente', sign:'debito', why:'Compra de bienes al exterior: cuenta corriente, débito (−) porque salen divisas.'},
+  {t:'Migrantes ecuatorianos envían remesas desde España', acct:'corriente', sign:'credito', why:'Las remesas son transferencias (ingreso secundario): cuenta corriente, crédito (+).'},
+  {t:'Ecuador paga intereses de su deuda externa', acct:'corriente', sign:'debito', why:'Los intereses son ingreso primario (rentas): cuenta corriente, débito (−).'},
+  {t:'Ecuador paga a una naviera extranjera por transporte marítimo', acct:'corriente', sign:'debito', why:'Es importación de servicios: cuenta corriente, débito (−) porque salen divisas.'},
+  {t:'Una empresa extranjera instala una planta (IED) en Guayaquil', acct:'financiera', sign:'credito', why:'La inversión extranjera directa es cuenta financiera; entra capital, por eso crédito (+).'},
+  {t:'Un banco ecuatoriano compra bonos del Tesoro de EE.UU.', acct:'financiera', sign:'debito', why:'Adquisición de activos financieros externos: cuenta financiera; sale capital, débito (−).'},
+  {t:'Un fondo extranjero compra bonos emitidos por el Estado ecuatoriano', acct:'financiera', sign:'credito', why:'Inversión de cartera: cuenta financiera; entra capital, por eso crédito (+).'},
+  {t:'Se condona parte de la deuda externa a favor de Ecuador', acct:'capital', sign:'credito', why:'La condonación es una transferencia de capital: cuenta de capital, crédito (+).'},
+  {t:'Ecuador vende un terreno a una embajada extranjera', acct:'capital', sign:'credito', why:'Venta de un activo no producido a un no residente (terreno): cuenta de capital, crédito (+).'}
+];
+let regDone=0, regOk=0;
+function buildReg(){
+  const list=$('#regList'); list.innerHTML='';
+  transactions.forEach((tr,idx)=>{
+    const item=document.createElement('div'); item.className='reg-item';
+    item.innerHTML=`
+      <div class="txt">${idx+1}. ${tr.t}</div>
+      <div class="reg-controls">
+        <select data-role="acct">
+          <option value="">— Elige la cuenta —</option>
+          <option value="corriente">Cuenta corriente</option>
+          <option value="capital">Cuenta de capital</option>
+          <option value="financiera">Cuenta financiera</option>
+        </select>
+        <select data-role="sign">
+          <option value="">— Elige el signo —</option>
+          <option value="credito">Crédito (+)</option>
+          <option value="debito">Débito (−)</option>
+        </select>
+        <button class="btn btn-check" data-role="check">Comprobar</button>
+      </div>
+      <div class="reg-feedback"></div>`;
+    const acctSel=$('[data-role=acct]',item), signSel=$('[data-role=sign]',item);
+    const fb=$('.reg-feedback',item); const btn=$('[data-role=check]',item);
+    btn.addEventListener('click',()=>{
+      if(!acctSel.value||!signSel.value){ fb.className='reg-feedback show no'; fb.textContent='Selecciona la cuenta y el signo antes de comprobar.'; return; }
+      const ok = acctSel.value===tr.acct && signSel.value===tr.sign;
+      if(!item.dataset.counted){ item.dataset.counted='1'; regDone++; if(ok) regOk++; }
+      else if(ok && item.dataset.wasWrong){ regOk++; item.dataset.wasWrong=''; }
+      else if(!ok && !item.dataset.wasWrong && item.dataset.wasOk){ regOk--; }
+      item.dataset.wasWrong = ok?'':'1';
+      item.dataset.wasOk = ok?'1':'';
+      fb.className='reg-feedback show '+(ok?'ok':'no');
+      fb.textContent=(ok?'✅ ¡Correcto! ':'❌ Aún no. ')+tr.why;
+      $('#regScore').textContent = regOk+' / '+regDone+' correctas';
+      $('#regScore').className='score-tag '+(regDone && regOk===regDone?'good':'');
+    });
+    list.appendChild(item);
+  });
+  $('#regScore').textContent='0 / 0 correctas';
+}
+buildReg();
+
+/* ============================================================
+   TALLER · CUADRA LA BALANZA DE COSTALUZ
+============================================================ */
+const cuadra = [
+  {cc:-800, ck:50,  cf:null, eo:0,    ask:'cf', ans:750,
+   why:'−800 + 50 + CF = 0, entonces CF = +750. El déficit corriente se financia con entrada neta de capital.'},
+  {cc:1200, ck:100, cf:null, eo:0,    ask:'cf', ans:-1300,
+   why:'1,200 + 100 + CF = 0, entonces CF = −1,300. El país acumula activos en el exterior: salida neta de capital.'},
+  {cc:-500, ck:20,  cf:430,  eo:null, ask:'eo', ans:50,
+   why:'−500 + 20 + 430 = −50. Para llegar a cero, EyO = +50.'},
+  {cc:300,  ck:30,  cf:-400, eo:null, ask:'eo', ans:70,
+   why:'300 + 30 − 400 = −70. Para llegar a cero, EyO = +70.'}
+];
+let cuDone=0, cuOk=0;
+function parseNum(v){ return parseFloat(String(v).replace(/[,\s]/g,'').replace('−','-').replace('+','')); }
+function buildCuadra(){
+  const list=$('#cuadraList'); list.innerHTML='';
+  cuadra.forEach((c,idx)=>{
+    const cell=(key,label)=> c[key]===null
+      ? `<tr><td>${label}</td><td><input class="num-in" type="text" inputmode="numeric" placeholder="¿?" data-role="in"></td></tr>`
+      : `<tr><td>${label}</td><td>${sgn(c[key])}</td></tr>`;
+    const item=document.createElement('div'); item.className='cuadra-item';
+    item.innerHTML=`
+      <div class="q-ask">Caso ${idx+1}: halla ${c.ask==='cf'?'la cuenta financiera':'los errores y omisiones'}.</div>
+      <table class="mini-table">
+        <tr><th>Cuenta</th><th style="text-align:right">Saldo</th></tr>
+        ${cell('cc','Cuenta corriente')}${cell('ck','Cuenta de capital')}${cell('cf','Cuenta financiera')}${cell('eo','Errores y omisiones')}
+        <tr><td><b>Total</b></td><td><b>0</b></td></tr>
+      </table>
+      <div class="reg-controls"><button class="btn btn-check" data-role="check">Comprobar</button></div>
+      <div class="reg-feedback"></div>`;
+    const inp=$('[data-role=in]',item), fb=$('.reg-feedback',item);
+    $('[data-role=check]',item).addEventListener('click',()=>{
+      const v=parseNum(inp.value);
+      if(isNaN(v)){ fb.className='reg-feedback show no'; fb.textContent='Escribe un número antes de comprobar.'; return; }
+      const ok = v===c.ans;
+      if(!item.dataset.counted){ item.dataset.counted='1'; cuDone++; if(ok) cuOk++; }
+      else if(ok && item.dataset.wasWrong){ cuOk++; item.dataset.wasWrong=''; }
+      else if(!ok && !item.dataset.wasWrong && item.dataset.wasOk){ cuOk--; }
+      item.dataset.wasWrong = ok?'':'1'; item.dataset.wasOk = ok?'1':'';
+      fb.className='reg-feedback show '+(ok?'ok':'no');
+      fb.textContent=(ok?'✅ ¡Correcto! ':'❌ Aún no. ')+c.why;
+      $('#cuadraScore').textContent = cuOk+' / '+cuDone+' correctas';
+      $('#cuadraScore').className='score-tag '+(cuDone && cuOk===cuDone?'good':'');
+    });
+    list.appendChild(item);
+  });
+  $('#cuadraScore').textContent='0 / 0 correctas';
+}
+buildCuadra();
+
+/* ============================================================
+   SIMULADOR DE SALDOS
+============================================================ */
+const sX=$('#sX'), sM=$('#sM'), sR=$('#sR'), sI=$('#sI');
+function simUpdate(){
+  const X=+sX.value, M=+sM.value, R=+sR.value, I=+sI.value;
+  $('#vX').textContent=fmt(X); $('#vM').textContent=fmt(M);
+  $('#vR').textContent=fmt(R); $('#vI').textContent=fmt(I);
+  const saldo = (X-M)+R-I;
+  const box=$('#simBox'), verdict=$('#simVerdict'), amount=$('#simAmount'), msg=$('#simMsg'), bar=$('#simBar');
+  amount.textContent=(saldo>0?'+':saldo<0?'−':'')+'$'+fmt(Math.abs(saldo))+' M';
+  const maxRange=15000;
+  const w = Math.min(50, Math.abs(saldo)/maxRange*50);
+  if(saldo>0){
+    box.className='result-box superavit'; verdict.textContent='SUPERÁVIT ▲';
+    msg.textContent='Los créditos superan a los débitos: el país recibe más de lo que paga. Se refleja en salida neta de capital o más reservas.';
+    bar.className='bar-fill pos'; bar.style.left='50%'; bar.style.width=w+'%';
+  } else if(saldo<0){
+    box.className='result-box deficit'; verdict.textContent='DÉFICIT ▼';
+    msg.textContent='Los débitos superan a los créditos: el país paga más de lo que recibe. Debe financiarse con entrada de capital o con reservas.';
+    bar.className='bar-fill neg'; bar.style.width=w+'%'; bar.style.left=(50-w)+'%';
+  } else {
+    box.className='result-box'; verdict.textContent='EQUILIBRIO ⟷';
+    msg.textContent='Créditos y débitos se igualan: saldo neutro.';
+    bar.className='bar-fill'; bar.style.width='0%'; bar.style.left='50%';
+  }
+}
+[sX,sM,sR,sI].forEach(s=>s.addEventListener('input',simUpdate));
+$$('#scenarios .sbtn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    sX.value=b.dataset.x; sM.value=b.dataset.m; sR.value=b.dataset.r; sI.value=b.dataset.i; simUpdate();
+  });
+});
+simUpdate();
+
+const quiz = [
+ {
+  "sub": "Clase 1 · 3.1.1 · Definición y marco de la BP",
+  "q": "¿Qué estándar del FMI se utiliza para la balanza de pagos?",
+  "opts": [
+   "Las NIIF",
+   "El coeficiente de Gini",
+   "El MBP6 (Sexto Manual de Balanza de Pagos)",
+   "El PIB nominal"
+  ],
+  "correct": 2,
+  "fb": "El MBP6 del FMI define la metodología común que hace comparables las cifras entre países."
+ },
+ {
+  "sub": "Clase 1 · 3.1.1 · Definición y marco de la BP",
+  "q": "La balanza de pagos registra…",
+  "opts": [
+   "Solo las exportaciones e importaciones de bienes",
+   "Las transacciones entre residentes y no residentes en un periodo",
+   "Únicamente los movimientos de capital",
+   "Las cuentas fiscales del Estado"
+  ],
+  "correct": 1,
+  "fb": "La BP clasifica por residencia económica y abarca todas las transacciones con el exterior, no solo las de bienes."
+ },
+ {
+  "sub": "Clase 1 · 3.1.1 · Definición y marco de la BP",
+  "q": "Una exportación cobrada en un banco del exterior genera…",
+  "opts": [
+   "Un crédito en cuenta corriente y un débito en cuenta financiera",
+   "Dos créditos en cuenta corriente",
+   "Un débito en cuenta corriente y un crédito en cuenta de capital",
+   "Un solo asiento, sin contrapartida"
+  ],
+  "correct": 0,
+  "fb": "Partida doble: la exportación es un crédito corriente y el cobro en el exterior es un activo financiero (débito)."
+ },
+ {
+  "sub": "Clase 2 · 3.1.2 · Estructura y registro técnico",
+  "q": "La balanza de pagos se divide en las cuentas…",
+  "opts": [
+   "Corriente, comercial y fiscal",
+   "De activos, pasivos y reservas",
+   "Pública, privada y mixta",
+   "Corriente, de capital y financiera"
+  ],
+  "correct": 3,
+  "fb": "Se estructura en cuenta corriente, cuenta de capital y cuenta financiera, más la partida de errores y omisiones."
+ },
+ {
+  "sub": "Clase 2 · 3.1.2 · Estructura y registro técnico",
+  "q": "Las remesas de los migrantes se registran en…",
+  "opts": [
+   "La cuenta de capital",
+   "El ingreso secundario de la cuenta corriente",
+   "La inversión de cartera",
+   "Los activos de reserva"
+  ],
+  "correct": 1,
+  "fb": "Las remesas son transferencias corrientes sin contrapartida: ingreso secundario, crédito (+)."
+ },
+ {
+  "sub": "Clase 2 · 3.1.2 · Estructura y registro técnico",
+  "q": "La condonación de una deuda externa a favor del país se registra en…",
+  "opts": [
+   "La cuenta corriente",
+   "La inversión directa",
+   "La cuenta de capital",
+   "Los errores y omisiones"
+  ],
+  "correct": 2,
+  "fb": "La condonación es una transferencia de capital: cuenta de capital, crédito (+)."
+ },
+ {
+  "sub": "Clase 2 · 3.1.2 · Estructura y registro técnico",
+  "q": "Con cuenta corriente −500, cuenta de capital +20 y cuenta financiera +430 (millones), los errores y omisiones son…",
+  "opts": [
+   "+50",
+   "−50",
+   "0",
+   "+950"
+  ],
+  "correct": 0,
+  "fb": "La suma de las tres cuentas es −50; para que el total sea cero, EyO debe ser +50."
+ },
+ {
+  "sub": "Clase 3 · 3.1.3 · Déficits y superávits",
+  "q": "Existe superávit cuando…",
+  "opts": [
+   "Los débitos superan a los créditos",
+   "No hay transacciones con el exterior",
+   "El PIB deja de crecer",
+   "Los créditos superan a los débitos"
+  ],
+  "correct": 3,
+  "fb": "Superávit = créditos mayores que débitos; el país recibe más de lo que paga."
+ },
+ {
+  "sub": "Clase 3 · 3.1.3 · Déficits y superávits",
+  "q": "¿Qué fuente de financiamiento de un déficit NO genera deuda?",
+  "opts": [
+   "Un préstamo de un banco extranjero",
+   "La emisión de bonos en el exterior",
+   "La inversión extranjera directa (IED)",
+   "Un crédito de un organismo multilateral"
+  ],
+  "correct": 2,
+  "fb": "La IED es capital propio de la empresa inversora; préstamos y bonos generan deuda e intereses futuros."
+ },
+ {
+  "sub": "Clase 3 · 3.1.3 · Déficits y superávits",
+  "q": "¿Por qué la dolarización limita la corrección de un déficit?",
+  "opts": [
+   "El país no tiene moneda propia para devaluar",
+   "Prohíbe importar bienes",
+   "Elimina las remesas",
+   "Impide la inversión extranjera"
+  ],
+  "correct": 0,
+  "fb": "Sin moneda propia no se puede devaluar; el ajuste recae en la demanda interna y las importaciones."
+ }
+];
+
+/* ============================================================
+   CUESTIONARIO
+============================================================ */
+let answeredSet = new Set();
+let quizScore = 0;
+const LETTERS=['A','B','C','D'];
+
+function buildQuiz(){
+  const box=$('#quizBox'); box.innerHTML='';
+  answeredSet=new Set(); quizScore=0;
+  $('#qAnswered').textContent='0'; $('#qScore').textContent='0';
+  $('#finalBox').classList.remove('show');
+  quiz.forEach((item,qi)=>{
+    const q=document.createElement('div'); q.className='q';
+    const opts=item.opts.map((o,oi)=>`
+      <div class="opt" data-qi="${qi}" data-oi="${oi}">
+        <span class="letter">${LETTERS[oi]}</span><span>${o}</span>
+      </div>`).join('');
+    q.innerHTML=`
+      <div class="q-sub">${item.sub}</div>
+      <div class="q-text">${qi+1}. ${item.q}</div>
+      <div class="opts">${opts}</div>
+      <div class="q-feedback"></div>`;
+    box.appendChild(q);
+  });
+  $$('.opt').forEach(opt=>{
+    opt.addEventListener('click',()=>{
+      const qi=+opt.dataset.qi, oi=+opt.dataset.oi;
+      if(answeredSet.has(qi)) return;
+      answeredSet.add(qi);
+      const item=quiz[qi];
+      const qEl=opt.closest('.q');
+      const optionEls=$$('.opt',qEl);
+      optionEls.forEach(o=>o.classList.add('locked'));
+      const isRight = oi===item.correct;
+      if(isRight){ opt.classList.add('correct'); quizScore++; }
+      else{ opt.classList.add('incorrect'); optionEls[item.correct].classList.add('correct'); }
+      const fb=$('.q-feedback',qEl);
+      fb.className='q-feedback show '+(isRight?'ok':'no');
+      fb.textContent=(isRight?'✅ ¡Correcto! ':'❌ Incorrecto. ')+item.fb;
+      $('#qAnswered').textContent=answeredSet.size;
+      $('#qScore').textContent=quizScore;
+      if(answeredSet.size===quiz.length) showFinal();
+    });
+  });
+}
+function showFinal(){
+  const pct=Math.round(quizScore/quiz.length*100);
+  const fb=$('#finalBox');
+  $('#finalScore').textContent=quizScore+' / '+quiz.length;
+  $('#finalPct').textContent=pct+'%';
+  let msg;
+  if(pct===100) msg='¡Excelente! Dominas los conceptos clave de esta parte de la Unidad 3.';
+  else if(pct>=70) msg='Muy bien. Repasa los subtemas donde fallaste para afianzar.';
+  else if(pct>=50) msg='Vas por buen camino, pero conviene revisar la teoría antes de la evaluación.';
+  else msg='Repasa el material: vuelve a las secciones y practica las dinámicas interactivas.';
+  $('#finalMsg').textContent=msg;
+  fb.classList.add('show');
+  fb.scrollIntoView({behavior:'smooth',block:'center'});
+}
+$('#quizReset').addEventListener('click',()=>{ buildQuiz(); $('#quiz').scrollIntoView({behavior:'smooth'}); });
+buildQuiz();
+
+</script>
+</body>
+</html>
